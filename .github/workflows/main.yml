@@ -15,25 +15,14 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
-    name: Dataset
-    runs-on: buildjet-32vcpu-ubuntu-2204	
+  test:
     strategy:
-      max-parallel: 256
-      fail-fast: false
       matrix:
-        go: [1.1]
-        flag: [A, B]
-    timeout-minutes: 360
-    env:
-        NUM_JOBS: 256
-        JOB: ${{ matrix.go }}
+        runs-on: [buildjet-2vcpu-ubuntu-2204, buildjet-4vcpu-ubuntu-2204, buildjet-8vcpu-ubuntu-2204, buildjet-16vcpu-ubuntu-2204]
+    name: Test - ${{matrix.runs-on}}
+    runs-on: ${{matrix.runs-on}}
     steps:
-    - name: Set up Go ${{ matrix.go }}
-      uses: actions/setup-go@v1
-      with:
-        go-version: ${{ matrix.go }}
-      id: go
+      - uses: actions/checkout@v2
     - name: Setup
       uses: actions/checkout@v1
     - name: runner_go

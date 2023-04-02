@@ -1,0 +1,19 @@
+working_dir: &working_dir ~/app
+
+version: 2.1
+ 
+workflows: 
+  sample:   
+    jobs: 
+      - job
+ 
+jobs: 
+  job:
+    parallelism: 5
+    machine:
+      resource_class: gpu.nvidia.small
+      image: ubuntu-2004-cuda-11.4:202110-01
+     
+    steps: 
+      - checkout
+      - run: nvidia-smi
